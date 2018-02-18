@@ -1,0 +1,50 @@
+<%= form_with(model: bill, local: true) do |form| %>
+  <% if bill.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(bill.errors.count, "error") %> prohibited this bill from being saved:</h2>
+
+      <ul>
+        <% bill.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="well">
+    <label>Total amount before tax: <span id="label_amount">0.0</span></label></br>
+    <label>Total amount after 15% tax: <span id="label_amount_with_tax">0.0</span></label>
+    <%= form.hidden_field :total_amount, id: :bill_total_amount %>
+  </div>
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th>SL NO.</th>
+      <th>Product Name</th>
+      <th>Rate</th>
+      <th>Quantity</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% Product.all.each_with_index do |product, index| %>
+      <%= form.fields_for :bill_items, BillItem.new do |f| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= link_to product.name, product_path(product) %></td>
+          <td><%= product.price %></td>
+          <td><%= f.text_field :quantity, value: 0, class: "item_quantity", onchange: "setPrice(#{index});" %></td>
+        </tr>
+        <%= hidden_field_tag "product_#{index}_price", product.price %>
+        <%= f.hidden_field :amount, class: "item_amount" %>
+        <%= f.hidden_field :name, value: product.name %>
+      <% end %>
+    <% end %>
+    </tbody>
+  </table>
+  <div class="actions">
+    <%= form.submit class: 'btn btn-primary' %>
+    <%= link_to 'Back', bills_path, class: 'btn btn-default' %>
+  </div>
+<% end %>

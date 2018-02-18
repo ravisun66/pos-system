@@ -1,0 +1,19 @@
+<h3>Menu Items</h3>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Price</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @products.each do |product| %>
+    <tr>
+      <td><%= product.name %> (<%=raw list_tag_links(product.all_tags)%>)</td>
+      <td><%= product.price %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

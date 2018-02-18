@@ -1,0 +1,29 @@
+<h2>Bill Details</h2>
+
+<p>Please find below the details of the bill</p>
+
+<div class="well">
+  Total Amount: <%= @bill.total_amount %>
+</div>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>SL NO.</th>
+    <th>Product Name</th>
+    <th>Quantity</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @bill.bill_items.each_with_index do |item, index| %>
+    <tr>
+      <td><%= index + 1 %></td>
+      <td><%= item.name %></td>
+      <td><%= item.quantity %> units</td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'Back', bills_path, class: 'btn btn-default' %>
