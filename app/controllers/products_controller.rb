@@ -1,20 +1,11 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :fetch_product, only: [:index, :list]
 
   def index
-    if params[:tag]
-      @products = Product.tagged_with(params[:tag])
-    else
-      @products = Product.all
-    end
   end
 
   def list
-    if params[:tag]
-      @products = Product.tagged_with(params[:tag])
-    else
-      @products = Product.all
-    end
   end
 
   def show
@@ -64,6 +55,14 @@ class ProductsController < ApplicationController
   private
     def set_product
       @product = Product.find(params[:id])
+    end
+
+    def fetch_product
+      if params[:tag]
+        @products = Product.tagged_with(params[:tag])
+      else
+        @products = Product.all
+      end
     end
 
     def product_params
